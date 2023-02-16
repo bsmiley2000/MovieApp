@@ -8,7 +8,7 @@ using MovieApp.Models;
 namespace MovieApp.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20230209022601_Initial")]
+    [Migration("20230216021820_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,9 +23,8 @@ namespace MovieApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -54,13 +53,15 @@ namespace MovieApp.Migrations
 
                     b.HasKey("ApplicationId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             ApplicationId = 1,
-                            Category = "Action",
+                            CategoryId = 1,
                             Director = "Christopher Nolan",
                             Rating = "PG-13",
                             Title = "Batman Begins",
@@ -69,7 +70,7 @@ namespace MovieApp.Migrations
                         new
                         {
                             ApplicationId = 2,
-                            Category = "Action",
+                            CategoryId = 3,
                             Director = "James Cameron",
                             Rating = "PG-13",
                             Title = "Avatar",
@@ -78,12 +79,67 @@ namespace MovieApp.Migrations
                         new
                         {
                             ApplicationId = 3,
-                            Category = "Action",
+                            CategoryId = 6,
                             Director = "Anthony Russo",
                             Rating = "PG-13",
                             Title = "The Avengers",
                             Year = 2012
                         });
+                });
+
+            modelBuilder.Entity("MovieApp.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Romance"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryName = "Horror"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryName = "Holiday"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            CategoryName = "None"
+                        });
+                });
+
+            modelBuilder.Entity("MovieApp.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("MovieApp.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -9,9 +9,16 @@
 <script src="~/lib/bootstrap/js/bootstrap.js"></script>
 <div>
     <form method="post">
-        <label asp-for="Category">Category:</label>
-        <input asp-for="Category" />
-        <span asp-validation-for="Category" class="text-danger"></span>
+        <label asp-for="CategoryId">Category: </label>
+        <select asp-for="CategoryId">
+            <option>Select a Category</option>
+            @foreach (Category c in ViewBag.Categories)
+            {
+                <option value="@c.CategoryId">@c.CategoryName</option>
+            }
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+
         <br />
 
         <label asp-for="Title">Title:</label>

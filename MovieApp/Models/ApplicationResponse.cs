@@ -12,8 +12,11 @@ namespace MovieApp.Models
         [Required]
         public int ApplicationId { get; set; }
 
+        //Build foreign key relationship
+
         [Required(ErrorMessage = "This field is required")]
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
 
         [Required(ErrorMessage = "This field is required")]
@@ -37,7 +40,9 @@ namespace MovieApp.Models
         [StringLength(25, ErrorMessage = "Notes field can only have 25 characters")]
         public string Notes { get; set; }
 
-  
+ 
+
+
 
 
     }
